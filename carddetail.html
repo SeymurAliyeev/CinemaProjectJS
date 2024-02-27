@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="byDetail"></div>
+  <script>
+    window.onload = () => {
+      let byDetail = document.querySelector('#byDetail')
+      var movieId = new URLSearchParams(window.location.search).get('id');
+      fetch(`https://api.tvmaze.com/shows/${movieId}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Response is not ok');
+          }
+          return response.json()
+        })
+        .then(data => {
+          byDetail.innerHTML +=
+            `<div class="card col-3">
+         <img src="${data.image.medium}" class="card-img-top" alt="..." >
+          <div class="card-body">
+          <h5 class="card-title">${data.name}</h5>     
+          <p class="card-text">Premiere: ${data.premiered}</p>
+          </div>
+           <ul class="list-group list-group-flush">
+           <li class="list-group-item">IMDB Rating: ${data.rating.average}</li>
+          <li class="list-group-item">Genre: ${data.genres}</li>
+          <li class="list-group-item">Language: ${data.language}</li>
+           </ul>
+            <div class="card-body">
+          <a href="${data.officialSite}" class="card-link">Go to website</a>
+          <a href="carddetail.html?id=${data.id}" class="card-link">Go to detail</a>
+            </div>
+        </div>`
+        })
+    }
+  </script>
+</body>
+
+</html>
